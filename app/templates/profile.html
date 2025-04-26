@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анкета</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-5">
+    <div class="card shadow">
+        <div class="card-body">
+            <h1 class="text-center mb-4">Анкета</h1>
+            <form method="post" action="/" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Имя:</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                    <div class="invalid-feedback">Пожалуйста, введите ваше имя.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="name2" class="form-label">Фамилия:</label>
+                    <input type="text" id="name2" name="name2" class="form-control" required>
+                    <div class="invalid-feedback">Пожалуйста, введите вашу фамилию.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="age" class="form-label">Возраст:</label>
+                    <input type="number" id="age" name="age" class="form-control" required>
+                    <div class="invalid-feedback">Пожалуйста, укажите ваш возраст.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="city" class="form-label">Город:</label>
+                    <input type="text" id="city" name="city" class="form-control" required>
+                    <div class="invalid-feedback">Пожалуйста, введите ваш город.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="hobby" class="form-label">Хобби:</label>
+                    <textarea id="hobby" name="hobby" rows="4" class="form-control" required></textarea>
+                    <div class="invalid-feedback">Пожалуйста, укажите ваши хобби.</div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Отправить анкету</button>
+            </form>
+        </div>
+    </div>
+    <hr class="my-5">
+    <h2 class="text-center">Данные анкеты:</h2>
+    <div class="mt-4">
+        {% for i in data %}
+        <div class="mb-3 border rounded p-3">
+            <h4>
+                {{ i.name }} {{ i.name2 }}
+
+                {% set age = i.age %}
+                {% set age_str = age|string %}
+                {% set last_digit = age_str[-1:] %}
+                {% set last_two_digits = age_str[-2:] %}
+
+                {% if last_two_digits in ['11', '12', '13', '14'] %}
+                    {{ age }} лет
+                {% elif last_digit == '1' %}
+                    {{ age }} год
+                {% elif last_digit in ['2', '3', '4'] %}
+                    {{ age }} года
+                {% else %}
+                    {{ age }} лет
+                {% endif %}
+            </h4>
+            <p>Проживает в городе <strong>{{ i.city }}</strong></p>
+            <p>Хобби: {{ i.hobby }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    (function () {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+</body>
+</html>
